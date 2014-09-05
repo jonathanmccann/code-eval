@@ -15,19 +15,13 @@ public class Main {
 			String[] lineArray = line.split(",");
 
 			if (lineArray.length > 0) {
-				String bitString = Integer.toBinaryString(Integer.valueOf(lineArray[0]));
+				int number = Integer.parseInt(lineArray[0]);
+				int firstPosition = Integer.parseInt(lineArray[1]);
+				int secondPosition = Integer.parseInt(lineArray[2]);
 
-				char[] charArray = bitString.toCharArray();
+				boolean isSameBit = (((number >> (firstPosition - 1)) & 1) == ((number >> (secondPosition - 1)) & 1));
 
-				int firstPosition = Integer.valueOf(lineArray[1]) - 1;
-				int secondPosition = Integer.valueOf(lineArray[2]) - 1;
-
-				if (charArray[firstPosition] == charArray[secondPosition]) {
-					System.out.println("true");
-				}
-				else {
-					System.out.println("false");
-				}
+				System.out.println(isSameBit);
 			}
 		}
 	}
