@@ -64,46 +64,60 @@ public class Main {
 					}
 				}
 
-				List<Integer> optimalSubset = new ArrayList<Integer>();
+				List<Integer> solution = new ArrayList<Integer>();
+				int totalWeightOfOptimalSolution = 0;
+				int optimalValue = itemMatrix[numberOfItems - 1][packageTotalWeight - 1];
 
-				while (numberOfItems > 0) {
-					if (itemChoices[numberOfItems - 1][packageTotalWeight - 1] == 1) {
-						optimalSubset.add(numberOfItems - 1);
+				for (int j = numberOfItems; j > 0; j--) {
+					for (int i = packageTotalWeight; i > 0; i--) {
+						if (itemMatrix[j - 1][i - 1] == optimalValue) {
+							List<Integer> optimalSubset = new ArrayList<Integer>();
 
-						numberOfItems--;
+							int packageTotalWeight2 = i;
+							int numberOfItems2 = j;
 
-						packageTotalWeight -= weights[numberOfItems];
-					}
-					else {
-						numberOfItems--;
-					}
-				}
+							while (numberOfItems2 > 0) {
+								if (itemChoices[numberOfItems2 - 1][packageTotalWeight2 - 1] == 1) {
+									optimalSubset.add(numberOfItems2 - 1);
 
-				List<Integer> optimalSubsetMinimizedWeight = new ArrayList<Integer>(optimalSubset);
+									numberOfItems2--;
 
-				for (int optimal : optimalSubset) {
-					for (int i = 1; i < values.length; i++) {
-						if ((values[i] == values[optimal]) && (weights[i] < weights[optimal]) && !optimalSubsetMinimizedWeight.contains(i)) {
-							optimalSubsetMinimizedWeight.remove((Object)optimal);
-							optimalSubsetMinimizedWeight.add(i);
+									packageTotalWeight2 -= weights[numberOfItems2];
+								}
+								else {
+									numberOfItems2--;
+								}
+							}
+
+							int tempWeight = 0;
+
+							for (int optimalIndex : optimalSubset) {
+								tempWeight += weights[optimalIndex];
+							}
+
+							if ((tempWeight < totalWeightOfOptimalSolution) || (totalWeightOfOptimalSolution == 0)) {
+								totalWeightOfOptimalSolution = tempWeight;
+
+								solution = optimalSubset;
+							}
 						}
 					}
 				}
 
-				if (optimalSubsetMinimizedWeight.isEmpty()) {
+				if (solution.isEmpty()) {
 					System.out.println("-");
 				}
 				else {
 					String output = "";
 
-					Collections.sort(optimalSubsetMinimizedWeight);
+					Collections.sort(solution);
 
-					for (int i = 0; i < optimalSubsetMinimizedWeight.size(); i++) {
+					for (int i = 0; i < solution.size(); i++) {
 						if (output.equals("")) {
-							output = output.concat(String.valueOf(optimalSubsetMinimizedWeight.get(i)));
+							output = output.concat(String.valueOf(solution.get(i)));
 						}
 						else {
-							output = output + "," + String.valueOf(optimalSubsetMinimizedWeight.get(i));
+							output = output + "," + String.valueOf(solution.get(i));
 						}
 					}
 
