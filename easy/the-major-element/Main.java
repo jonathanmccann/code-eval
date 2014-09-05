@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class Main {
     public static void main (String[] args) throws IOException {
@@ -16,31 +15,37 @@ public class Main {
 			String[] lineArray = line.split(",");
 
 			if (lineArray.length > 0) {
-				Arrays.sort(lineArray);
-
-				String previousElement = lineArray[0];
-
 				int count = 1;
-				int majorElement = 0;
+				String majorElement = "";
 				int threshold = lineArray.length / 2;
 
+				int index = 0;
+
 				for (int i = 1; i < lineArray.length; i++) {
-					if (previousElement.equals(lineArray[i])) {
+					if (lineArray[index].equals(lineArray[i])) {
 						count++;
-
-						if (count > threshold) {
-							majorElement = Integer.valueOf(lineArray[i]);
-
-							break;
-						}
 					}
 					else {
-						previousElement = lineArray[i];
+						count--;
+					}
+
+					if (count == 0) {
+						index = i;
 						count = 1;
 					}
 				}
 
-				if (majorElement == 0) {
+				majorElement = lineArray[index];
+
+				int majorElementCount = 0;
+
+				for (int i = 0; i < lineArray.length; i++) {
+					if (lineArray[i].equals(majorElement)) {
+						majorElementCount++;
+					}
+				}
+
+				if (majorElementCount <= threshold) {
 					System.out.println("None");
 				}
 				else {
