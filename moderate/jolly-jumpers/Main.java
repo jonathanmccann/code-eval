@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class Main {
@@ -23,16 +24,17 @@ public class Main {
 					integerList.add(Integer.valueOf(lineArray[i]));
 				}
 
-				List<Integer> differenceList = new ArrayList<Integer>();
-
-				for (int i = 0; i < integerList.size() - 1; i++) {
-					differenceList.add(Math.abs(integerList.get(i) - integerList.get(i + 1)));
-				}
+				HashSet<Integer> differenceList = new HashSet<Integer>();
 
 				boolean isJollyJumper = true;
 
-				for (int i = 1; i < integerList.size(); i++) {
-					if (!differenceList.contains(i)) {
+				for (int i = 0; i < integerList.size() - 1; i++) {
+					int difference = Math.abs(integerList.get(i) - integerList.get(i + 1));
+
+					if (!differenceList.contains(difference) && (difference <= (integerList.size() - 1)) && (difference >= 1)) {
+						differenceList.add(difference);
+					}
+					else {
 						isJollyJumper = false;
 
 						break;
