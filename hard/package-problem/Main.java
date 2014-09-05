@@ -4,9 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Main {
     public static void main (String[] args) throws IOException {
@@ -66,15 +64,6 @@ public class Main {
 					}
 				}
 
-				Map<Integer, Integer> duplicatesMap = new HashMap<Integer, Integer>();
-
-				for (int i = 0; i < numberOfItems - 1; i++) {
-					if (itemMatrix[i][packageTotalWeight - 1] == itemMatrix[i + 1][packageTotalWeight - 1]) {
-						duplicatesMap.put(i, values[i]);
-						duplicatesMap.put(i + 1, values[i + 1]);
-					}
-				}
-
 				List<Integer> optimalSubset = new ArrayList<Integer>();
 
 				while (numberOfItems > 0) {
@@ -93,12 +82,10 @@ public class Main {
 				List<Integer> optimalSubsetMinimizedWeight = new ArrayList<Integer>(optimalSubset);
 
 				for (int optimal : optimalSubset) {
-					if (duplicatesMap.containsKey(optimal)) {
-						for (Map.Entry<Integer, Integer> entry : duplicatesMap.entrySet()) {
-							if (entry.getValue().equals(values[optimal]) && (weights[entry.getKey()] < weights[optimal])) {
-								optimalSubsetMinimizedWeight.remove((Object)optimal);
-								optimalSubsetMinimizedWeight.add(entry.getKey());
-							}
+					for (int i = 1; i < values.length; i++) {
+						if ((values[i] == values[optimal]) && (weights[i] < weights[optimal])) {
+							optimalSubsetMinimizedWeight.remove((Object)optimal);
+							optimalSubsetMinimizedWeight.add(i);
 						}
 					}
 				}
