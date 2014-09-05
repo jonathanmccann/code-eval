@@ -83,7 +83,7 @@ public class Main {
 
 				for (int optimal : optimalSubset) {
 					for (int i = 1; i < values.length; i++) {
-						if ((values[i] == values[optimal]) && (weights[i] < weights[optimal])) {
+						if ((values[i] == values[optimal]) && (weights[i] < weights[optimal]) && !optimalSubsetMinimizedWeight.contains(i)) {
 							optimalSubsetMinimizedWeight.remove((Object)optimal);
 							optimalSubsetMinimizedWeight.add(i);
 						}
