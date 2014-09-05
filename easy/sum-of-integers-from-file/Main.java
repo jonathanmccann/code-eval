@@ -14,9 +14,7 @@ public class Main {
 		long sumTotal = 0;
 
 		while ((line = in.readLine()) != null) {
-			if (!line.isEmpty()) {
-				sumTotal = sumTotal + Integer.valueOf(line);
-			}
+			sumTotal += Integer.valueOf(line);
 		}
 
 		System.out.println(sumTotal);
