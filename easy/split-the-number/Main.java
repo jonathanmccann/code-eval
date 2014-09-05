@@ -26,20 +26,13 @@ public class Main {
 
 				for (int i = 0; i < operation.length; i++) {
 					if (operation[i].equals("+") || operation[i].equals("-")) {
-						index = i;
-
 						operator = operation[i];
-
-						break;
 					}
-				}
-
-				for (int i = 0; i < numbers.length; i++) {
-					if (i < index) {
+					else if (operator.isEmpty()) {
 						firstNumber = firstNumber.concat(numbers[i]);
 					}
 					else {
-						secondNumber = secondNumber.concat(numbers[i]);
+						secondNumber = secondNumber.concat(numbers[i - 1]);
 					}
 				}
 
