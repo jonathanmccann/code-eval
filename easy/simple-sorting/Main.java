@@ -57,7 +57,15 @@ public class Main {
 
 		@Override
 		public int compareTo(MyDouble myDouble) {
-			return (int) (value - myDouble.value);
+			if (value < myDouble.value) {
+				return -1;
+			}
+			else if (value > myDouble.value) {
+				return 1;
+			}
+			else {
+				return 0;
+			}
 		}
 	}
 }
