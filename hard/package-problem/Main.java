@@ -2,6 +2,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Main {
     public static void main (String[] args) throws IOException {
@@ -18,83 +23,103 @@ public class Main {
 				// Initialize items
 				String[] items = lineArray[1].split("\\s+");
 
-				// Knapsack capacity
-				int W = Integer.valueOf(lineArray[0].trim()) * 100;
+				int packageTotalWeight = Integer.valueOf(lineArray[0].trim()) * 100;
+				int numberOfItems = items.length;
 
-				// Number of distinct items
-				int n = items.length;
+				int[] values = new int[numberOfItems];
+				int[] weights = new int[numberOfItems];
 
-				// Array of item values
-				int[] v = new int[n];
+				// Initialize the item arrays with null first value
+				values[0] = 0;
+				weights[0] = 0;
 
-				// Array of item weights
-				int[] w = new int[n];
-
-				// Array of item index number
-				String[] itemIndexNumber = new String[n];
-
-				// Initialize the item arrays
-				v[0] = 0;
-				w[0] = 0;
-				itemIndexNumber[0] = "0";
-
-				for (int i = 1; i < n; i++) {
+				for (int i = 1; i < numberOfItems; i++) {
 					String item = items[i].substring(1, items[i].length() - 1);
 
 					String[] itemParts = item.split(",");
 
-					itemIndexNumber[i] = itemParts[0];
 					Double weight = Double.valueOf(itemParts[1]) * 100;
-					w[i] = weight.intValue();
-					v[i] = Integer.valueOf(itemParts[2].substring(1));
+
+					weights[i] = weight.intValue();
+					values[i] = Integer.valueOf(itemParts[2].substring(1));
 				}
 
-				int[][] m = new int[n][W];
-				int[][] p = new int[n][W];
+				int[][] itemMatrix = new int[numberOfItems][packageTotalWeight];
+				int[][] itemChoices = new int[numberOfItems][packageTotalWeight];
 
-				for (int i = 1; i < n; i++) {
-					for (int j = 0; j < W; j++) {
-						if (w[i] <= j) {
-							if (m[i - 1][j] > m[i - 1][j - w[i]] + v[i]) {
-								m[i][j] = m[i - 1][j];
-								p[i][j] = -1;
+				for (int i = 1; i < numberOfItems; i++) {
+					for (int j = 0; j < packageTotalWeight; j++) {
+						if (weights[i] <= j && (weights[i] <= j)) {
+							if ((itemMatrix[i - 1][j] > (itemMatrix[i - 1][j - weights[i]] + values[i]))) {
+								itemMatrix[i][j] = itemMatrix[i - 1][j];
+								itemChoices[i][j] = -1;
 							}
 							else {
-								m[i][j] = m[i - 1][j - w[i]] + v[i];
-								p[i][j] = 1;
+								itemMatrix[i][j] = itemMatrix[i - 1][j - weights[i]] + values[i];
+								itemChoices[i][j] = 1;
 							}
 						}
 						else {
-							m[i][j] = m[i - 1][j];
-							p[i][j] = -1;
+							itemMatrix[i][j] = itemMatrix[i - 1][j];
+							itemChoices[i][j] = -1;
 						}
 					}
 				}
 
-				String output = "";
+				Map<Integer, Integer> duplicatesMap = new HashMap<Integer, Integer>();
 
-				while (n > 0) {
-					if (p[n - 1][W - 1] == 1) {
-						if (output == "") {
-							output = output.concat(String.valueOf(n - 1));
-						}
-						else {
-							output = String.valueOf(n - 1) + "," + output;
-						}
+				for (int i = 0; i < numberOfItems - 1; i++) {
+					if (itemMatrix[i][packageTotalWeight - 1] == itemMatrix[i + 1][packageTotalWeight - 1]) {
+						duplicatesMap.put(i, values[i]);
+						duplicatesMap.put(i + 1, values[i + 1]);
+					}
+				}
 
-						n--;
+				List<Integer> optimalSubset = new ArrayList<Integer>();
 
-						W -= w[n];
+				while (numberOfItems > 0) {
+					if (itemChoices[numberOfItems - 1][packageTotalWeight - 1] == 1) {
+						optimalSubset.add(numberOfItems - 1);
+
+						numberOfItems--;
+
+						packageTotalWeight -= weights[numberOfItems];
 					}
 					else {
-						n--;
+						numberOfItems--;
 					}
 				}
 
-				if (output == "") {
+				List<Integer> optimalSubsetMinimizedWeight = new ArrayList<Integer>(optimalSubset);
+
+				for (int optimal : optimalSubset) {
+					if (duplicatesMap.containsKey(optimal)) {
+						for (Map.Entry<Integer, Integer> entry : duplicatesMap.entrySet()) {
+							if (entry.getValue().equals(values[optimal]) && (weights[entry.getKey()] < weights[optimal])) {
+								optimalSubsetMinimizedWeight.remove((Object)optimal);
+								optimalSubsetMinimizedWeight.add(entry.getKey());
+							}
+						}
+					}
+				}
+
+				if (optimalSubsetMinimizedWeight.isEmpty()) {
 					System.out.println("-");
 				}
 				else {
+					String output = "";
+
+					Collections.sort(optimalSubsetMinimizedWeight);
+
+					for (int i = 0; i < optimalSubsetMinimizedWeight.size(); i++) {
+						if (output.equals("")) {
+							output = output.concat(String.valueOf(optimalSubsetMinimizedWeight.get(i)));
+						}
+						else {
+							output = output + "," + String.valueOf(optimalSubsetMinimizedWeight.get(i));
+						}
+					}
+
 					System.out.println(output);
 				}
 			}
