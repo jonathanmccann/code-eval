@@ -10,6 +10,8 @@ public class Main {
 			for (int i = 2; i <= (primeCandidate / 2); i++) {
 				if (primeCandidate % i == 0) {
 					isPrime = false;
+                    
+                    break;
 				}
 			}
 
