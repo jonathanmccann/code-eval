@@ -42,7 +42,7 @@ public class Main {
 				digits.setLength(digits.length() - 1);
 				words.setLength(words.length() - 1);
 
-				System.out.println(digits.toString() + "|" + words.toString());
+				System.out.println(words.toString() + "|" + digits.toString());
 			}
 		}
 	}
