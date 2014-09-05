@@ -25,14 +25,12 @@ public class Main {
 					stack.push(Integer.parseInt(s));
 				}
 
-				for (int i = 0; i < lineArray.length / 2; i++) {
+				while (stack.getSize() > 0) {
 					sb.append(stack.pop());
 
-					if (i != (lineArray.length - 1)) {
-						sb.append(" ");
-					}
-
 					if (stack.getSize() > 0) {
+						sb.append(" ");
+
 						stack.pop();
 					}
 				}
