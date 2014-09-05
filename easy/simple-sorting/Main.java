@@ -17,13 +17,13 @@ public class Main {
 		while ((line = in.readLine()) != null) {
 			String[] lineArray = line.split("\\s+");
 
-			List<Double> doubleList = new ArrayList<Double>();
+			List<MyDouble> doubleList = new ArrayList<MyDouble>();
 
 			if (lineArray.length > 0) {
 				StringBuilder sb = new StringBuilder(lineArray.length);
 
 				for (int i = 0; i < lineArray.length; i++) {
-					doubleList.add(Double.parseDouble(lineArray[i]));
+					doubleList.add(new MyDouble(lineArray[i]));
 				}
 
 				Collections.sort(doubleList);
@@ -38,6 +38,26 @@ public class Main {
 
 				System.out.println(sb.toString());
 			}
+		}
+	}
+
+	static class MyDouble implements Comparable<MyDouble> {
+		final double value;
+		final String string;
+
+		MyDouble(String str) {
+			string = str;
+			value = Double.parseDouble(str);
+		}
+
+		@Override
+		public String toString() {
+			return string;
+		}
+
+		@Override
+		public int compareTo(MyDouble myDouble) {
+			return (int) (value - myDouble.value);
 		}
 	}
 }
