@@ -19,7 +19,7 @@ public class Main {
 			if (lineArray.length > 0) {
 				MyStack stack = new MyStack();
 
-				StringBuilder sb = new StringBuilder(lineArray.length / 2);
+				StringBuilder sb = new StringBuilder();
 
 				for (String s : lineArray) {
 					stack.push(Integer.parseInt(s));
