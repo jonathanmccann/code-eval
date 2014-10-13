@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main {
     public static void main (String[] args) throws IOException {
@@ -15,42 +17,33 @@ public class Main {
 			String[] lineArray = line.split(";");
 
 			if (lineArray.length > 0) {
-				StringBuilder sb = new StringBuilder();
+				String output = "";
 
 				String[] stringDigits = lineArray[0].split(",");
 
-				Integer[] integerDigits = new Integer[stringDigits.length];
-
 				int sum = Integer.valueOf(lineArray[1]);
-				int digitsCount = 1;
 
-				for (int i = 0; i < stringDigits.length; i++) {
-					integerDigits[i] = Integer.valueOf(stringDigits[i]);
-				}
+				Map<Integer, Integer> summationMap =
+					new HashMap<Integer, Integer>();
 
-				for (int i = 0; i < integerDigits.length; i++) {
-					for (int j = digitsCount; j < integerDigits.length; j++) {
-						int temporarySum = Integer.valueOf(integerDigits[i]) + Integer.valueOf(integerDigits[j]);
+				for (String digit : stringDigits) {
+					int integerDigit = Integer.valueOf(digit);
 
-						if (temporarySum == sum) {
-							if (!sb.toString().isEmpty()) {
-								sb.append(";");
-							}
-
-							sb.append(Integer.valueOf(integerDigits[i]));
-							sb.append(",");
-							sb.append(Integer.valueOf(integerDigits[j]));
-						}
+					if (summationMap.containsKey(integerDigit)) {
+						output =
+							String.valueOf(summationMap.get(integerDigit)) + ","
+								+ digit + ";" + output;
 					}
-
-					digitsCount++;
+					else {
+						summationMap.put((sum - integerDigit), integerDigit);
+					}
 				}
 
-				if (!sb.toString().isEmpty()) {
-					System.out.println(sb.toString());
+				if (output.isEmpty()) {
+					System.out.println("NULL");
 				}
 				else {
-					System.out.println("NULL");
+					System.out.println(output.substring(0, output.length() - 1));
 				}
 			}
 		}
