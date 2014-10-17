@@ -2,9 +2,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Iterator;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class Main {
     public static void main (String[] args) throws IOException {
@@ -18,28 +18,26 @@ public class Main {
 			String[] lineArray = line.split(";");
 
 			if (lineArray.length > 0) {
-				List<Integer> distances = new ArrayList<Integer>();
+				SortedSet<Integer> distances = new TreeSet<Integer>();
 
 				for (int i = 0; i < lineArray.length; i++) {
-					String[] locationAndDistance = lineArray[i].split(",");
-
-					distances.add(Integer.parseInt(locationAndDistance[1]));
+					distances.add(Integer.parseInt(lineArray[i].split(",")[1]));
 				}
-
-				Collections.sort(distances);
 
 				int currentLocation = 0;
 
 				StringBuilder sb = new StringBuilder(distances.size() * 2);
 
-				for (int i = 0; i < distances.size(); i++) {
-					int distance = distances.get(i) - currentLocation;
+				Iterator<Integer> iterator = distances.iterator();
 
-					currentLocation = distances.get(i);
+				while (iterator.hasNext()) {
+					int distanceToNextCity = iterator.next();
 
-					sb.append(distance);
+					sb.append(distanceToNextCity - currentLocation);
 
-					if (i != (distances.size() - 1)) {
+					currentLocation = distanceToNextCity;
+
+					if (iterator.hasNext()) {
 						sb.append(",");
 					}
 				}
