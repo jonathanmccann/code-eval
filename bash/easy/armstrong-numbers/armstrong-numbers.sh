@@ -8,7 +8,6 @@ while read -r LINE || [[ -n $LINE ]]; do
     TOTAL_SUM=0
 
     for DIGIT in $DIGITS ; do
-		#TOTAL_SUM=`expr $TOTAL_SUM + $(($DIGIT**$NUMBER_SIZE))`
 		let TOTAL_SUM="$TOTAL_SUM + $(($DIGIT**$NUMBER_SIZE))"
 	done
 
