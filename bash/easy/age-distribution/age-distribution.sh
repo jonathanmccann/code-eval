@@ -1,3 +1,5 @@
+#!/bin/bash
+
 while read -r LINE || [[ -n $LINE ]]; do
     if (( "$LINE" < 0 || "$LINE" > 100))
 	then

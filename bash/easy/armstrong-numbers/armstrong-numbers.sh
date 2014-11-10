@@ -1,3 +1,5 @@
+#!/bin/bash
+
 while read -r LINE || [[ -n $LINE ]]; do
     NUMBER_SIZE=${#LINE}
 
