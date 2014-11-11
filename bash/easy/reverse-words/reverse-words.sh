@@ -6,7 +6,7 @@ while read -r LINE || [[ -n $LINE ]]; do
 	for ((i = ${#WORD_ARRAY[@]} - 1; i >= 0; i--)); do
 		echo -n ${WORD_ARRAY[i]}
 
-		if [[ i > 0 ]]
+		if [[ $i > 0 ]]
 		then
 			echo -n " "
 		fi
