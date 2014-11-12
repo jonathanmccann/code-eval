@@ -1,0 +1,4 @@
+Hello World,r
+Hello CodeEval,E
+This is a Test,z
+This is a test,i
